@@ -1,4 +1,6 @@
 data/*
-gender_project.ipynb
-gender-prediction.ipynb
+/gender-prediction.ipynb
+/gender_project.ipynb
 catboost_info
+submission/result.csv
+submission/inference.ipynb

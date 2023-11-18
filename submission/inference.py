@@ -3,24 +3,62 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-import sklearn
-import catboost
 from catboost import CatBoostClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import roc_curve
 from sklearn.metrics import f1_score
 import joblib
+import os
 
 from tqdm.notebook import tqdm_notebook
 from warnings import filterwarnings
 filterwarnings('ignore')
 
-tr_mcc_codes = pd.read_csv('data/mcc_codes.csv', sep=';', index_col='mcc_code')
-tr_types = pd.read_csv('data/trans_types.csv', sep=';', index_col='trans_type')
-transactions = pd.read_csv('data/transactions.csv', index_col='client_id')
-gender_train = pd.read_csv('data/train.csv', index_col='client_id')
-gender_test = pd.read_csv('data/test.csv', index_col='client_id')
+
+PATH_DATA = '../data'
+MODEL_PATH = "../submission/models/"
+
+
+model = CatBoostClassifier()  
+model.load_model(os.path.join(MODEL_PATH,'model_94.84'))
+
+tr_mcc_codes = pd.read_csv(os.path.join(PATH_DATA, 'mcc_codes.csv'), sep=';', index_col='mcc_code')
+tr_types = pd.read_csv(os.path.join(PATH_DATA, 'trans_types.csv'), sep=';', index_col='trans_type')
+
+transactions = pd.read_csv(os.path.join(PATH_DATA, 'transactions.csv'), index_col='client_id')
+gender_train = pd.read_csv(os.path.join(PATH_DATA, 'train.csv'), index_col='client_id')
+gender_test = pd.read_csv(os.path.join(PATH_DATA, 'test.csv'), index_col='client_id')
 transactions_train = transactions.join(gender_train, how='inner')
 transactions_test = transactions.join(gender_test, how='inner')
+
+
+for df in [transactions_test]:
+    df['day'] = df['trans_time'].str.split().apply(lambda x: int(x[0]) % 7)
+    df['hour'] = df['trans_time'].apply(lambda x: re.search(' \d*', x).group(0)).astype(int)
+    df['night'] = ~df['hour'].between(6, 22).astype(int)
+
+
+def features_creation_advanced(x): 
+    features = []
+    features.append(pd.Series(x['day'].value_counts(normalize=True).add_prefix('day_')))
+    features.append(pd.Series(x['hour'].value_counts(normalize=True).add_prefix('hour_')))
+    features.append(pd.Series(x['night'].value_counts(normalize=True).add_prefix('night_')))
+    
+    features.append(pd.Series(x[x['amount']>=0]['amount'].agg(['min', 'max', 'mean', 'median', 'std', 'count', 'sum'])\
+                                                        .add_prefix('positive_transactions_')))
+    features.append(pd.Series(x[x['amount']<0]['amount'].agg(['min', 'max', 'mean', 'median', 'std', 'count', 'sum'])\
+                                                        .add_prefix('negative_transactions_')))
+
+    features.append(pd.Series(x['mcc_code'].value_counts(normalize=True).add_prefix('mcc_')))
+    
+    return pd.concat(features)
+
+
+data_test = transactions_test.groupby(transactions_test.index).apply(features_creation_advanced).unstack(-1)
+
+predict= model.predict_proba(data_test)
+
+submission = pd.DataFrame(index=data_test.index)
+submission['probability'] = predict[:,1]
+submission.to_csv('result.csv')
