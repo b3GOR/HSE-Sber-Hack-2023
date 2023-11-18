@@ -4,3 +4,4 @@ data/*
 catboost_info
 submission/result.csv
 submission/inference.ipynb
+score.txt
