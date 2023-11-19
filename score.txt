@@ -1,0 +1,24 @@
+best estimator <catboost.core.CatBoostClassifier object at 0x000001E758B3A080>
+best score 0.7777777777777778
+best parameters {'depth': 5, 'iterations': 73, 'learning_rate': 0.12068818789379161}
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+ROC AUC: 0.790895061728395
+F1 score: 0.7585114806017419
+
+Random Search - Best Hyperparameters: {'learning_rate': 0.1, 'iterations': 200, 'depth': 6}
+best score 0.77744708994709
+
+Random Search - Best Hyperparameters: {'learning_rate': 0.1, 'l2_leaf_reg': 3, 'iterations': 300, 'depth': 3, 'border_count': 200}
+best score 0.7810046061399557
+
+Random Search - Best Hyperparameters: {'border_count': 50, 'depth': 4, 'iterations': 85, 'l2_leaf_reg': 2, 'learning_rate': 0.15842692948967135}
+best score 0.7741448831426305
+
+Test ROC-AUC: 0.7826809580521371
+Random Search - Best Hyperparameters: {'learning_rate': 0.1, 'l2_leaf_reg': 3, 'iterations': 300, 'depth': 3, 'border_count': 200}
+Best ROC-AUC score: 0.8702235794621067
+
+Test ROC-AUC: 0.777464602355432
+Random Search - Best Hyperparameters: {'learning_rate': 0.1, 'l2_leaf_reg': 3, 'iterations': 300, 'depth': 3, 'border_count': 200}
+Best ROC-AUC score: 0.8695824112399814
+
