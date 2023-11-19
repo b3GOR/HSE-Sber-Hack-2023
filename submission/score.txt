@@ -1,0 +1,10 @@
+best estimator <catboost.core.CatBoostClassifier object at 0x000001E758B3A080>
+best score 0.7777777777777778
+best parameters {'depth': 5, 'iterations': 73, 'learning_rate': 0.12068818789379161}
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+ROC AUC: 0.790895061728395
+F1 score: 0.7585114806017419
+
+Random Search - Best Hyperparameters: {'learning_rate': 0.1, 'iterations': 200, 'depth': 6}
+best score 0.77744708994709
+

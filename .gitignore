@@ -2,6 +2,4 @@ data/*
 /gender-prediction.ipynb
 /gender_project.ipynb
 catboost_info
-submission/result.csv
-submission/inference.ipynb
-score.txt
+
