@@ -5,6 +5,8 @@
 ## Бэкенд-разработчики:
 - [Михаил](https://github.com/varekha)
 - [Слава](ttps://github.com/02lava)
+- [Егор](https://github.com/b3GOR)
+- [Олег](https://github.com/Aureilius)
 
 ## Cтэк технологий
 
@@ -12,6 +14,8 @@
 - seaborn
 - XGBoost
 - CatBoostClassifier
+- Numpy
+
 
 
 ## Подготовка и запуск проекта уже обученной модели
